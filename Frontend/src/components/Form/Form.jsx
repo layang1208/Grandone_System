@@ -7,27 +7,28 @@ import { useDispatch, useSelector } from "react-redux";
 import { createPost, updatePost } from "../../actions/posts";
 
 import FileBase from "react-file-base64";
-import { SignalCellularNullOutlined } from "@material-ui/icons";
 
 const Form = ({ currentId, setCurrentId }) => {
   const classes = useStyles();
   const dispatch = useDispatch();
   const [data, setData] = useState({
-    creator: "",
+    // creator: "",
     title: "",
     message: "",
     tags: "",
     selectedFile: "",
   });
   // get the post needs to be edited
-  const post = useSelector((state) =>
-    currentId ? state.posts.find((post) => post._id === currentId) : null
+  const post = useSelector(
+    (state) => currentId && state.posts.find((post) => post._id === currentId)
   );
+
+  const user = JSON.parse(localStorage.getItem("profile"));
 
   const clear = () => {
     setCurrentId(null);
     setData({
-      creator: "",
+      // creator: "",
       title: "",
       message: "",
       tags: "",
@@ -37,18 +38,26 @@ const Form = ({ currentId, setCurrentId }) => {
   const handleSubmit = (e) => {
     e.preventDefault();
     if (currentId) {
-      dispatch(updatePost(currentId, data));
+      dispatch(updatePost(currentId, { ...data, name: user?.result?.name }));
     } else {
-      dispatch(createPost(data));
+      dispatch(createPost({ ...data, name: user?.result?.name }));
     }
     clear();
   };
-
   useEffect(() => {
     if (post) {
       setData(post);
     }
   }, [post]);
+  if (!user?.result?.name) {
+    return (
+      <Paper className={classes.paper}>
+        <Typography variant="h6" align="center">
+          Please sign in to create your own posts and like other's posts
+        </Typography>
+      </Paper>
+    );
+  }
   return (
     <Paper className={classes.paper}>
       <div className={classes.toolbar} />
@@ -63,14 +72,14 @@ const Form = ({ currentId, setCurrentId }) => {
             {currentId ? "Edit" : "Create"} a Post
           </Typography>
 
-          <TextField
+          {/* <TextField
             name="creator"
             label="Creator"
             variant="outlined"
             fullWidth
             value={data.creator}
             onChange={(e) => setData({ ...data, creator: e.target.value })}
-          />
+          /> */}
           <TextField
             name="title"
             label="Title"

@@ -6,7 +6,7 @@ const router = express.Router();
 const _ = require("lodash");
 
 router.post("/", validate(customerSchema), async (req, res) => {
-  let customer = await Customer.findOne({ email: req.body.email });
+  const customer = await Customer.findOne({ email: req.body.email });
   if (customer) return res.status(400).send("You have already subscribed");
 
   customer = new Customer(_.pick(req.body, ["email"]));

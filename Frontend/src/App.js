@@ -5,30 +5,22 @@ import {
   Redirect,
   Route,
 } from "react-router-dom";
-import { Grid, Grow, Container } from "@material-ui/core";
-import useStyles from "./appStyle";
-import Home from "./components/Home";
+
 import Contact from "../src/components/Contact";
 import About from "../src/components/About";
 import Menu from "../src/components/Menu";
-import { Products, Navbar, Cart, Checkout, Posts, Form } from "./components";
+import { Products, Navbar, Cart, Checkout } from "./components";
 import { commerce } from "./lib/commerce";
 
-//redux config
-import { useDispatch } from "react-redux";
-
-// import actions
-import { getPosts } from "./actions/posts";
+import PostsPage from "./Pages/PostsPage/PostsPage";
+import Home from "./Pages/Home/Home";
+import Auth from "./components/Auth/Auth";
 
 const App = () => {
-  const dispatch = useDispatch();
-  const classes = useStyles();
   const [products, setProducts] = useState([]);
   const [cart, setCart] = useState({});
   const [order, setOrder] = useState({});
   const [error, setError] = useState({});
-
-  const [currentId, setCurrentId] = useState(null);
 
   const fetchProducts = async () => {
     try {
@@ -83,15 +75,10 @@ const App = () => {
     }
   };
 
-  // useEffect(() => {
-  //   fetchProducts();
-  //   fetchCart();
-  // }, []);
-
   useEffect(() => {
-    dispatch(getPosts());
-    console.log(currentId);
-  }, [currentId, dispatch]);
+    fetchProducts();
+    fetchCart();
+  }, []);
 
   return (
     <div>
@@ -119,25 +106,10 @@ const App = () => {
             />
           </Route>
           <Route path="/posts">
-            <Container className={classes.container}>
-              <Grow in>
-                <Grid
-                  container
-                  direction="column"
-                  justifyContent="space-between"
-                  alignItems="space-between"
-                  spacing={3}
-                >
-                  <Grid item xs={12} sm={7}>
-                    <Form currentId={currentId} setCurrentId={setCurrentId} />
-                  </Grid>
-                  <Grid item xs={12} sm={5}>
-                    <Posts setCurrentId={setCurrentId} />
-                  </Grid>
-                </Grid>
-              </Grow>
-            </Container>
+            <PostsPage />
           </Route>
+          <Route path="/auth" component={Auth} />
+          <Route exact path="/" component={Home} />
 
           {/* <Route exact path="/" component={Home} />
             <Route exact path="/contact" component={Contact} />

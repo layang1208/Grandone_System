@@ -7,8 +7,9 @@ import Post from "./Post/Post";
 
 const Posts = ({ setCurrentId }) => {
   const posts = useSelector((state) => state.posts);
+  // console.log(posts);
   const classes = useStyles();
-
+  // if (!posts) return "No posts";
   return !posts.length ? (
     <CircularProgress />
   ) : (

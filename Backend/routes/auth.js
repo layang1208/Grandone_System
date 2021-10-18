@@ -7,13 +7,22 @@ const { validate } = require("../middleware/validator");
 const { authSchema } = require("../validation/auth");
 
 router.post("/", validate(authSchema), async (req, res) => {
-  let user = await User.findOne({ email: req.body.email });
-  if (!user) return res.status(400).send("Invalid email or password");
+  try {
+    const user = await User.findOne({ email: req.body.email });
+    if (!user)
+      return res.status(400).json({ message: "Invalid email or password" });
 
-  const validPassword = await bcrypt.compare(req.body.password, user.password);
-  if (!validPassword) return res.status(400).send("Invalid email or password");
-  const token = user.generateAuthToken();
-  res.send(token);
+    const validPassword = await bcrypt.compare(
+      req.body.password,
+      user.password
+    );
+    if (!validPassword)
+      return res.status(400).json({ message: "Invalid email or password" });
+    const token = user.generateAuthToken();
+    res.status(200).json({ result: user, token });
+  } catch (error) {
+    res.status(500).json({ message: "Something went wrong" });
+  }
 });
 
 module.exports = router;

@@ -1,5 +1,6 @@
 import { combineReducers } from "redux";
 import products from "./products";
 import posts from "./posts";
+import authReducer from "./auth";
 
-export const reducers = combineReducers({ posts });
+export const reducers = combineReducers({ posts, authReducer });

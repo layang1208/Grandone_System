@@ -1,5 +1,5 @@
 import { makeStyles, fade } from "@material-ui/core/styles";
-
+import { deepPurple } from "@material-ui/core/colors";
 const drawerWidth = 0;
 
 export default makeStyles((theme) => ({
@@ -65,5 +65,14 @@ export default makeStyles((theme) => ({
     [theme.breakpoints.up("md")]: {
       width: "20ch",
     },
+  },
+  avatar: {
+    color: theme.palette.getContrastText(deepPurple[500]),
+    backgroundColor: deepPurple[500],
+  },
+  profile: {
+    display: "flex",
+    justifyContent: "space-between",
+    width: "300px",
   },
 }));

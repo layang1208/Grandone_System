@@ -12,6 +12,15 @@ axios.interceptors.response.use(null, (error) => {
   return Promise.reject(error);
 });
 
+axios.interceptors.request.use((req) => {
+  if (localStorage.getItem("profile")) {
+    req.headers.authorization = `Bearer ${
+      JSON.parse(localStorage.getItem("profile")).token
+    }`;
+  }
+  return req;
+});
+
 export default {
   get: axios.get,
   post: axios.post,

@@ -1,7 +1,9 @@
 import * as actions from "../constants/actionTypes";
+
 export default (posts = [], action) => {
   switch (action.type) {
     case actions.FETCH_POSTS:
+      console.log(action.payload);
       return action.payload;
     case actions.CREATE_POST:
       // spread previous post and save new post inside the payload

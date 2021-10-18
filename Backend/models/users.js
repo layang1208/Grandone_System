@@ -35,6 +35,7 @@ userSchema.methods.generateAuthToken = function () {
       isAdmin: this.isAdmin,
     },
     config.get("jwtPrivateKey")
+    // { expiresIn: "1h" }
   );
   return token;
 };
