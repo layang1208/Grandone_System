@@ -8,6 +8,7 @@ const postSchema = new mongoose.Schema({
   tags: [String],
   selectedFile: String,
   likes: {
+    // a set of userId within an array
     type: [String],
     default: [],
   },
@@ -17,6 +18,6 @@ const postSchema = new mongoose.Schema({
   },
 });
 
-const Post = mongoose.model("Posts", postSchema);
+const Post = mongoose.model("Post", postSchema);
 
 exports.Post = Post;

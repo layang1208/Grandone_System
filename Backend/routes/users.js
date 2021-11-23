@@ -20,7 +20,7 @@ router.post("/", validate(userSchema), async (req, res) => {
 
     const newUser = new User({
       name: firstname + lastname,
-      email: email,
+      email: email, 
       password: password,
     });
     const salt = await bcrypt.genSalt(10);

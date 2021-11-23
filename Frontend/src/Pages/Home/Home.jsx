@@ -1,7 +1,13 @@
 import React from "react";
-
+import useStyles from "./homeStyles";
+import { Container } from "@material-ui/core";
 const Home = () => {
-  return <div>Home</div>;
+	const classes = useStyles();
+	return (
+		<Container className={classes.container}>
+			<div>Home</div>
+		</Container>
+	);
 };
 
 export default Home;

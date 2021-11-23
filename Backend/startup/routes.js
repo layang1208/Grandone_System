@@ -3,7 +3,7 @@ const users = require("../routes/users");
 const auth = require("../routes/auth");
 const customer = require("../routes/customer");
 const contact = require("../routes/contact");
-const posts = require("../routes/post");
+const posts = require("../routes/posts");
 const error = require("../middleware/error");
 module.exports = function (app) {
   app.use(express.json());
