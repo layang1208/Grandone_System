@@ -1,12 +1,12 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect } from 'react';
 
-import { Paper, TextField, Button, Typography, Grid } from "@material-ui/core";
-import useStyles from "./postFormStyle";
+import { Paper, TextField, Button, Typography, Grid } from '@material-ui/core';
+import useStyles from './postFormStyle';
 
-import { useDispatch, useSelector } from "react-redux";
-import { createPost, updatePost } from "../../actions/posts";
-import { useHistory } from "react-router-dom";
-import FileBase from "react-file-base64";
+import { useDispatch, useSelector } from 'react-redux';
+import { createPost, updatePost } from '../../actions/posts';
+import { useHistory } from 'react-router-dom';
+import FileBase from 'react-file-base64';
 
 const PostForm = ({ currentId, setCurrentId }) => {
 	const classes = useStyles();
@@ -14,10 +14,10 @@ const PostForm = ({ currentId, setCurrentId }) => {
 	const history = useHistory();
 	const [data, setData] = useState({
 		// creator: "",
-		title: "",
-		message: "",
-		tags: "",
-		selectedFile: "",
+		title: '',
+		message: '',
+		tags: '',
+		selectedFile: '',
 	});
 	// get the post needs to be edited
 
@@ -26,16 +26,16 @@ const PostForm = ({ currentId, setCurrentId }) => {
 			currentId && state.posts.posts.find((post) => post._id === currentId)
 	);
 
-	const user = JSON.parse(localStorage.getItem("profile"));
+	const user = JSON.parse(localStorage.getItem('profile'));
 
 	const clear = () => {
 		setCurrentId(null);
 		setData({
 			// creator: "",
-			title: "",
-			message: "",
-			tags: "",
-			selectedFile: "",
+			title: '',
+			message: '',
+			tags: ''			,
+			selectedFile: '',
 		});
 	};
 	const handleTitleChange = (e) => {
@@ -79,7 +79,7 @@ const PostForm = ({ currentId, setCurrentId }) => {
 			>
 				<Grid>
 					<Typography variant="h5">
-						{currentId ? "Edit" : "Create"} a Post
+						{currentId ? 'Edit' : 'Create'} a Post
 					</Typography>
 
 					<TextField
@@ -105,7 +105,7 @@ const PostForm = ({ currentId, setCurrentId }) => {
 						fullWidth
 						value={data.tags}
 						onChange={(e) =>
-							setData({ ...data, tags: e.target.value.split(",") })
+							setData({ ...data, tags: e.target.value.split(',') })
 						}
 					/>
 					<div className={classes.fileInput}>

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from 'react';
 import {
 	Card,
 	CardActions,
@@ -7,49 +7,64 @@ import {
 	Typography,
 	Button,
 	ButtonBase,
-} from "@material-ui/core";
-import ThumbUpAltIcon from "@material-ui/icons/ThumbUpAlt";
-import ThumbUpAltOutlined from "@material-ui/icons/ThumbUpAltOutlined";
-import DeleteIcon from "@material-ui/icons/Delete";
-import MoreHorizIcon from "@material-ui/icons/MoreHoriz";
+} from '@material-ui/core';
+import ThumbUpAltIcon from '@material-ui/icons/ThumbUpAlt';
+import ThumbUpAltOutlined from '@material-ui/icons/ThumbUpAltOutlined';
+import DeleteIcon from '@material-ui/icons/Delete';
+import MoreHorizIcon from '@material-ui/icons/MoreHoriz';
 
-import moment from "moment";
-import useStyles from "./postStyle";
+import moment from 'moment';
+import useStyles from './postStyle';
 
-import { useDispatch } from "react-redux";
-import { useHistory } from "react-router-dom";
-import { deletePost, updateLike } from "../../../actions/posts";
+import { useDispatch } from 'react-redux';
+import { useHistory } from 'react-router-dom';
+import { deletePost, updateLike } from '../../../actions/posts';
 
 const Post = ({ post, setCurrentId }) => {
 	const classes = useStyles();
 	const dispatch = useDispatch();
-	const user = JSON.parse(localStorage.getItem("profile"));
+	const [likes, setLikes] = useState(post?.likes);
+	const user = JSON.parse(localStorage.getItem('profile'));
 	const history = useHistory();
-	const ifCurrentUser = () => {};
+
+	const userId = user?.result.googleId || user?.result._id;
+	// Like is an array of users who like this post
+	const hasLiked = post.likes.find((id) => id === userId);
 
 	const openPostDetail = (e) => {
 		history.push(`/posts/${post._id}`);
 	};
+
+	const handleLikeClick = async () => {
+		dispatch(updateLike(post._id));
+
+		// if user has liked this post, he want to unlike the post after a new click
+		if (hasLiked) {
+			setLikes(post.likes.filter((id) => id !== userId));
+		}
+		// if user has not liked this post, he want to like the post after a new click
+		else {
+			setLikes([...post.likes, userId]);
+		}
+	};
 	const Likes = () => {
-		if (post.likes.length > 0) {
-			return post.likes.find(
-				(like) => like === (user?.result.googleId || user?.result._id)
-			) ? (
+		if (likes.length > 0) {
+			return likes.find((like) => like === userId) ? (
 				<>
 					<ThumbUpAltIcon fontSize="small" />
 					&nbsp;
-					{post.likes.length > 2
-						? `You and ${post.likes.length - 1} others`
-						: `${post.likes.length} like${post.likes.length > 1 ? "s" : ""}`}
+					{likes.length > 2
+						? `You and ${likes.length - 1} others`
+						: `${likes.length} like${likes.length > 1 ? 's' : ''}`}
 				</>
 			) : (
 				<>
 					<ThumbUpAltOutlined fontSize="small" />
-					&nbsp;{post.likes.length} {post.likes.length === 1 ? "Like" : "Likes"}
+					&nbsp;{likes.length} {likes.length === 1 ? 'Like' : 'Likes'}
 				</>
 			);
 		}
-		// console.log(post.likes.length);
+		// console.log(likes.length);
 		return (
 			<>
 				<ThumbUpAltOutlined fontSize="small" />
@@ -92,9 +107,7 @@ const Post = ({ post, setCurrentId }) => {
 					color="primary"
 					// if do not have current user, can not press the button
 					disable={!user?.result}
-					onClick={() => {
-						dispatch(updateLike(post._id));
-					}}
+					onClick={handleLikeClick}
 				>
 					<Likes />
 					{/* <ThumbUpAltIcon fontSize="small" />
@@ -121,7 +134,7 @@ const Post = ({ post, setCurrentId }) => {
 							{/* show edit button only user is exist */}
 							<div className={classes.overlay2}>
 								<Button
-									style={{ color: "white" }}
+									style={{ color: 'white' }}
 									size="small"
 									onClick={() => {
 										setCurrentId(post._id);

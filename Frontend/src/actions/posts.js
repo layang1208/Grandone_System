@@ -1,5 +1,5 @@
-import * as api from "../api";
-import * as actions from "../constants/actionTypes";
+import * as api from '../api';
+import * as actions from '../constants/actionTypes';
 
 const getPost = (id) => async (dispatch) => {
 	try {
@@ -67,7 +67,7 @@ const updatePost = (id, post) => async (dispatch) => {
 };
 
 const updateLike = (id) => async (dispatch) => {
-	const user = localStorage.getItem("profile");
+	const user = localStorage.getItem('profile');
 	try {
 		const { data } = await api.updateLike(id, user?.token);
 		dispatch({ type: actions.UPDATE_LIKE, payload: data });
@@ -76,6 +76,15 @@ const updateLike = (id) => async (dispatch) => {
 	}
 };
 
+const addComment = (comment, id) => async (dispatch) => {
+	try {
+		const { data } = await api.addComment(comment, id);
+    dispatch({ type: actions.ADD_COMMENT, payload: data})
+		return data.comments
+	} catch (error) {
+		console.log(error);
+	}
+};
 const deletePost = (id) => async (dispatch) => {
 	try {
 		await api.deletePost(id);
@@ -90,5 +99,6 @@ export {
 	createPost,
 	updatePost,
 	updateLike,
+	addComment,
 	deletePost,
 };

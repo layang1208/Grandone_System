@@ -1,4 +1,4 @@
-import * as actions from "../constants/actionTypes";
+import * as actions from '../constants/actionTypes';
 
 export default (state = { isLoading: true, posts: [] }, action) => {
 	switch (action.type) {
@@ -41,6 +41,18 @@ export default (state = { isLoading: true, posts: [] }, action) => {
 					//the rest of posts will remain the same
 					post._id === action.payload._id ? action.payload : post
 				),
+			};
+		case actions.ADD_COMMENT:
+			return {
+				...state,
+				// return other posts in state
+				// update the post with a new comment
+				posts: state.posts.map((post) => {
+					if (post._id === action.payload._id) {
+						return action.payload;
+					}
+					return post;
+				}),
 			};
 		case actions.DELETE_POST:
 			return {
