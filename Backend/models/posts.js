@@ -12,10 +12,15 @@ const postSchema = new mongoose.Schema({
     type: [String],
     default: [],
   },
+  comments: {
+    type: [String],
+    default: [],
+  },
   createdAt: {
     type: Date,
-    default: new Date(),
+    default: new Date(), 
   },
+  
 });
 
 const Post = mongoose.model("Post", postSchema);

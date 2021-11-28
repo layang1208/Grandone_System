@@ -1,11 +1,11 @@
-const express = require("express");
+const express = require('express');
 const router = express.Router();
-const _ = require("lodash");
-const validateObjectId = require("../middleware/validateObjectId");
-const { Post } = require("../models/posts");
-const auth = require("../middleware/auth");
+const _ = require('lodash');
+const validateObjectId = require('../middleware/validateObjectId');
+const { Post } = require('../models/posts');
+const auth = require('../middleware/auth');
 
-router.get("/", async (req, res) => {
+router.get('/', async (req, res) => {
 	const { page } = req.query;
 	try {
 		// define a limit items per page
@@ -32,16 +32,15 @@ router.get("/", async (req, res) => {
 	}
 });
 
-
-router.get("/search", async (req, res) => {
+router.get('/search', async (req, res) => {
 	const { searchQuery, tags } = req.query;
 	try {
 		// RegExp => regular expression for mongodb
-		const title = new RegExp(searchQuery, "i");
+		const title = new RegExp(searchQuery, 'i');
 		console.log(title);
 		console.log(tags);
 		const posts = await Post.find({
-			$or: [{ title: title }, { tags: { $in: tags.split(",") } }],
+			$or: [{ title: title }, { tags: { $in: tags.split(',') } }],
 		});
 		res.json({ data: posts });
 	} catch (error) {
@@ -50,7 +49,7 @@ router.get("/search", async (req, res) => {
 	}
 });
 
-router.get("/:id", async (req, res) => {
+router.get('/:id', async (req, res) => {
 	const { id } = req.params;
 	try {
 		const post = await Post.findById(id);
@@ -60,8 +59,7 @@ router.get("/:id", async (req, res) => {
 	}
 });
 
-
-router.post("/", auth, async (req, res) => {
+router.post('/', auth, async (req, res) => {
 	const post = req.body;
 	const newPost = new Post({
 		...post,
@@ -76,7 +74,7 @@ router.post("/", auth, async (req, res) => {
 	}
 });
 
-router.put("/:id", [auth, validateObjectId], async (req, res) => {
+router.put('/:id', [auth, validateObjectId], async (req, res) => {
 	try {
 		const { id } = req.params;
 		const newPost = req.body;
@@ -95,21 +93,21 @@ router.put("/:id", [auth, validateObjectId], async (req, res) => {
 	}
 });
 
-router.delete("/:id", [auth, validateObjectId], async (req, res) => {
+router.delete('/:id', [auth, validateObjectId], async (req, res) => {
 	const { id } = req.params;
 	try {
 		await Post.findByIdAndDelete(id);
-		res.status(201).send("Post deleted");
+		res.status(201).send('Post deleted');
 	} catch (error) {
 		res.status(409).send({ message: error.message });
 	}
 });
 
-router.patch("/:id/like", [auth, validateObjectId], async (req, res) => {
+router.patch('/:id/like', [auth, validateObjectId], async (req, res) => {
 	const { id } = req.params;
 	console.log(req.userId);
 
-	if (!req.userId) return res.json({ messsage: "Unauthenticated" });
+	if (!req.userId) return res.json({ messsage: 'Unauthenticated' });
 	const post = await Post.findById(id);
 
 	const index = post.likes.findIndex((id) => id === String(req.userId));
@@ -127,6 +125,18 @@ router.patch("/:id/like", [auth, validateObjectId], async (req, res) => {
 	} catch (error) {
 		res.status(409).send({ message: error.message });
 	}
+});
+
+router.post('/:id/comments', async (req, res) => {
+	const { id } = req.params;
+	const { comment } = req.body;
+	console.log(req.body);
+	const post = await Post.findById(id);
+	post.comments.push(comment);
+
+	const updatePost = await Post.findByIdAndUpdate(id, post, { new: true });
+
+	res.json(updatePost);
 });
 
 module.exports = router;
