@@ -38,6 +38,7 @@ const emptyCart = () => commerce.cart.empty();
 const refreshCart = () => commerce.cart.refresh();
 const captureCheckout = (checkoutTokenId, newOrder) =>
 	commerce.checkout.capture(checkoutTokenId, newOrder);
+const createToken = (cartId, type) => commerce.checkout.generateToken(cartId, type)
 
 
 

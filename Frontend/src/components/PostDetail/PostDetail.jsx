@@ -1,18 +1,20 @@
-import React, { useEffect } from "react";
+import React, { useEffect } from 'react';
 import {
 	Paper,
 	Typography,
 	CircularProgress,
 	Divider,
-} from "@material-ui/core";
-import { useDispatch, useSelector } from "react-redux";
-// js library deal with time
-import moment from "moment";
-import { useParams, useHistory } from "react-router-dom";
-import useStyles from "./PostDetailStyle";
-import { getPost, getPostBySearch } from "../../actions/posts";
+	Button,
+} from '@material-ui/core';
+import { useDispatch, useSelector } from 'react-redux';
 
-import AddComments from './Comments/AddComments'
+// js library deal with time
+import moment from 'moment';
+import { useParams, useHistory } from 'react-router-dom';
+import useStyles from './PostDetailStyle';
+import { getPost, getPostBySearch } from '../../actions/posts';
+
+import AddComments from './Comments/AddComments';
 const PostDetail = () => {
 	const { post, posts, isLoading } = useSelector((state) => state.posts);
 	const dispatch = useDispatch();
@@ -21,7 +23,7 @@ const PostDetail = () => {
 	const history = useHistory();
 	const classes = useStyles();
 
-	console.log(post);
+	// console.log(post);
 
 	useEffect(() => {
 		dispatch(getPost(id));
@@ -29,7 +31,7 @@ const PostDetail = () => {
 
 	useEffect(() => {
 		if (post) {
-			dispatch(getPostBySearch({ search: "none", tags: post?.tags.join(",") }));
+			dispatch(getPostBySearch({ search: 'none', tags: post?.tags.join(',') }));
 		}
 	}, [post]);
 
@@ -39,7 +41,11 @@ const PostDetail = () => {
 		history.push(`/posts/${_id}`);
 	};
 
-    if (isLoading) {
+	const goBack = () => {
+		history.push(`/posts`);
+	};
+
+	if (isLoading) {
 		return (
 			<Paper elevation={6} className={classes.loadingPaper}>
 				<CircularProgress size="7em" />
@@ -47,12 +53,20 @@ const PostDetail = () => {
 		);
 	}
 
-    const recommendedPosts = posts.filter(({ _id }) => _id !== post._id);
+	const recommendedPosts = posts.filter(({ _id }) => _id !== post._id);
 
 	return (
-		<Paper style={{ padding: "20px", borderRadius: "15px" }} elevation={6}>
+		<Paper style={{ padding: '20px', borderRadius: '15px' }} elevation={6}>
 			<div className={classes.card}>
 				<div className={classes.section}>
+					<Button
+						className={classes.button}
+						color="primary"
+						variant="contained"
+						onClick={goBack}
+					>
+						Go Back
+					</Button>
 					<Typography variant="h3" component="h2">
 						{post.title}
 					</Typography>
@@ -71,20 +85,18 @@ const PostDetail = () => {
 					<Typography variant="body1">
 						{moment(post.createdAt).fromNow()}
 					</Typography>
-					<Divider style={{ margin: "20px 0" }} />
-					<Typography variant="body1">
-						<strong>Realtime Chat - coming soon!</strong>
-					</Typography>
-					<Divider style={{ margin: "20px 0" }} />
+					{/* <Divider style={{ margin: '20px 0' }} /> */}
+
+					<Divider style={{ margin: '20px 0' }} />
 					<AddComments post={post} />
-					<Divider style={{ margin: "20px 0" }} />
+					<Divider style={{ margin: '20px 0' }} />
 				</div>
 				<div className={classes.imageSection}>
 					<img
 						className={classes.media}
 						src={
 							post.selectedFile ||
-							"https://user-images.githubusercontent.com/194400/49531010-48dad180-f8b1-11e8-8d89-1e61320e1d82.png"
+							'https://user-images.githubusercontent.com/194400/49531010-48dad180-f8b1-11e8-8d89-1e61320e1d82.png'
 						}
 						alt={post.title}
 					/>
@@ -100,7 +112,7 @@ const PostDetail = () => {
 						{recommendedPosts.map(
 							({ title, name, message, likes, selectedFile, _id }) => (
 								<div
-									style={{ margin: "20px", cursor: "pointer" }}
+									style={{ margin: '20px', cursor: 'pointer' }}
 									onClick={() => openPost(_id)}
 									key={_id}
 								>

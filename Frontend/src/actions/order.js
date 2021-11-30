@@ -14,5 +14,14 @@ const refreshCart = () => async (dispatch) => {
 		console.log(error);
 	}
 };
+// const createToken = (cartId, type ) => async (dispatch) => {
+// 	try {
+// 		const token = await api.createToken(cartId, type);
+
+// 		dispatch({ type: actions.CREATE_TOKEN, payload: token})
+// 	} catch (error) {
+// 		console.log(error);
+// 	}
+// }
 
 export { captureCheckout, refreshCart };

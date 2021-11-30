@@ -31,10 +31,7 @@ const CheckoutForm = ({ captureCheckout, error, refreshCart }) => {
 	const dispatch = useDispatch();
 
 	const { cart } = useSelector((state) => state.cart);
-	const { order } = useSelector((state) => state.order);
-
-
-
+	
 	const nextStep = () => setActiveStep((prevActiveStep) => prevActiveStep + 1);
 	const backStep = () => setActiveStep((prevActiveStep) => prevActiveStep - 1);
 	const next = (data) => {

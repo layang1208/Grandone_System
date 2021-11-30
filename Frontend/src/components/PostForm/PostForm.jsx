@@ -34,7 +34,7 @@ const PostForm = ({ currentId, setCurrentId }) => {
 			// creator: "",
 			title: '',
 			message: '',
-			tags: ''			,
+			tags: '',
 			selectedFile: '',
 		});
 	};
