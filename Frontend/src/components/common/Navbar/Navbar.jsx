@@ -27,7 +27,7 @@ const Navbar = () => {
 	const location = useLocation();
 	const dispatch = useDispatch();
 	const history = useHistory();
-	
+
 	const [user, setUser] = useState(JSON.parse(localStorage.getItem('profile')));
 	const { cart } = useSelector((state) => state.cart);
 
@@ -51,9 +51,7 @@ const Navbar = () => {
 		//JWT
 		setUser(JSON.parse(localStorage.getItem('profile')));
 	}, [location]);
-	useEffect(() => {
-		
-	}, [dispatch]);
+
 	return (
 		<AppBar position="fixed" className={classes.appBar} color="inherit">
 			<Toolbar>
@@ -73,6 +71,55 @@ const Navbar = () => {
 						/>
 						Grandone Chicken
 					</Typography>
+				</div>
+				<div>
+					<ul className={classes.pageLinks}>
+						<li>
+							<Typography
+								component={Link}
+								to="/posts"
+								variant="subtitle1"
+								color="inherit"
+								className={classes.pageLink}
+							>
+								Blog
+							</Typography>
+						</li>
+						<li>
+							<Typography
+								component={Link}
+								to="/menu"
+								variant="subtitle1"
+								color="inherit"
+								className={classes.pageLink}
+							>
+								Menu
+							</Typography>
+						</li>
+						<li>
+							<Typography
+								component={Link}
+								to="/about"
+								variant="subtitle1"
+								color="inherit"
+								className={classes.pageLink}
+							>
+								About
+							</Typography>
+						</li>
+						<li>
+							<Typography
+								component={Link}
+								to="/contact"
+								variant="subtitle1"
+								color="inherit"
+								className={classes.pageLink}
+								style={{transition: 'all ease 0.5s'}}
+							>
+								Contact
+							</Typography>
+						</li>
+					</ul>
 				</div>
 				<div className={classes.grow}></div>
 				<div className={classes.cart}>
