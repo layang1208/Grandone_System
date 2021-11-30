@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect } from 'react';
 import {
 	AppBar,
 	ToolBar,
@@ -10,28 +10,30 @@ import {
 	Toolbar,
 	Button,
 	Avatar,
-} from "@material-ui/core";
-import { Link, useLocation } from "react-router-dom";
-import { ShoppingCart } from "@material-ui/icons";
-import useStyle from "./navbarStyle";
-import { useHistory } from "react-router";
-import { useDispatch } from "react-redux";
+} from '@material-ui/core';
+import { Link, useLocation } from 'react-router-dom';
+import { ShoppingCart } from '@material-ui/icons';
+import useStyle from './navbarStyle';
+import { useHistory } from 'react-router';
+import { useDispatch, useSelector } from 'react-redux';
 
 // import "../../css/style.css";
-import logo from "../../../img/grandone logo_2.png";
+import logo from '../../../img/grandone logo_2.png';
 
-import decode from "jwt-decode";
+import decode from 'jwt-decode';
 
-const Navbar = ({ totalItems }) => {
+const Navbar = () => {
 	const classes = useStyle();
 	const location = useLocation();
 	const dispatch = useDispatch();
 	const history = useHistory();
-	const [user, setUser] = useState(JSON.parse(localStorage.getItem("profile")));
+	
+	const [user, setUser] = useState(JSON.parse(localStorage.getItem('profile')));
+	const { cart } = useSelector((state) => state.cart);
 
 	const logout = () => {
-		dispatch({ type: "LOGOUT" });
-		history.push("/");
+		dispatch({ type: 'LOGOUT' });
+		history.push('/');
 		setUser(null);
 	};
 	// console.log(user?.result.name);
@@ -47,8 +49,11 @@ const Navbar = ({ totalItems }) => {
 		}
 
 		//JWT
-		setUser(JSON.parse(localStorage.getItem("profile")));
+		setUser(JSON.parse(localStorage.getItem('profile')));
 	}, [location]);
+	useEffect(() => {
+		
+	}, [dispatch]);
 	return (
 		<AppBar position="fixed" className={classes.appBar} color="inherit">
 			<Toolbar>
@@ -71,15 +76,15 @@ const Navbar = ({ totalItems }) => {
 				</div>
 				<div className={classes.grow}></div>
 				<div className={classes.cart}>
-					{location.pathname === "/menu" && (
+					{location.pathname === '/menu' && (
 						<div className={classes.button}>
 							<IconButton
 								component={Link}
-								to="/cart"
+								to="/menu/cart"
 								aria-label="Show cart items"
 								color="inherit"
 							>
-								<Badge badgeContent={totalItems} color="secondary">
+								<Badge badgeContent={cart.total_items} color="secondary">
 									<ShoppingCart />
 								</Badge>
 							</IconButton>

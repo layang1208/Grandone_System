@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect } from 'react';
 import {
 	Typography,
 	Button,
@@ -9,21 +9,31 @@ import {
 	StepLabel,
 	CircularProgress,
 	CssBaseline,
-} from "@material-ui/core";
-import useStyles from "./checkoutFormStyle";
-import AddressForm from "../AddressForm";
-import PaymentForm from "../PaymentForm";
-import Confirmation from "../ConfirmationForm/Confirmation";
-import { commerce } from "../../../lib/commerce";
-import { Link, useHistory } from "react-router-dom";
+} from '@material-ui/core';
+import useStyles from './checkoutFormStyle';
+import AddressForm from '../AddressForm';
+import PaymentForm from '../PaymentForm';
+import Confirmation from '../ConfirmationForm/Confirmation';
+import { commerce } from '../../../lib/commerce';
+import { Link, useHistory } from 'react-router-dom';
 
-const CheckoutForm = ({ cart, order, captureCheckout, error, refreshCart }) => {
+import { useDispatch, useSelector } from 'react-redux';
+
+
+const CheckoutForm = ({ captureCheckout, error, refreshCart }) => {
 	const [activeStep, setActiveStep] = useState(0);
 	const [checkoutToken, setCheckoutToken] = useState(null);
 	const [shippingData, setShippingData] = useState({});
 	const classes = useStyles();
-	const steps = ["Shipping Detail", "Make Your Payment"];
+	const steps = ['Shipping Detail', 'Make Your Payment'];
 	const history = useHistory();
+
+	const dispatch = useDispatch();
+
+	const { cart } = useSelector((state) => state.cart);
+	const { order } = useSelector((state) => state.order);
+
+
 
 	const nextStep = () => setActiveStep((prevActiveStep) => prevActiveStep + 1);
 	const backStep = () => setActiveStep((prevActiveStep) => prevActiveStep - 1);
@@ -34,12 +44,12 @@ const CheckoutForm = ({ cart, order, captureCheckout, error, refreshCart }) => {
 	const createToken = async () => {
 		try {
 			const token = await commerce.checkout.generateToken(cart.id, {
-				type: "cart",
+				type: 'cart',
 			});
 			setCheckoutToken(token);
 		} catch (error) {
 			// go to home page if error occurs
-			if (activeStep !== steps.length) history.push("/menu");
+			if (activeStep !== steps.length) history.push('/menu');
 		}
 	};
 	useEffect(() => {
@@ -65,8 +75,8 @@ const CheckoutForm = ({ cart, order, captureCheckout, error, refreshCart }) => {
 				checkoutToken={checkoutToken}
 				backStep={backStep}
 				nextStep={nextStep}
-				captureCheckout={captureCheckout}
-				refreshCart={refreshCart}
+				// captureCheckout={captureCheckout}
+				// refreshCart={refreshCart}
 			/>
 		);
 	console.log(shippingData);
@@ -84,7 +94,7 @@ const CheckoutForm = ({ cart, order, captureCheckout, error, refreshCart }) => {
 						))}
 					</Stepper>
 					{activeStep === steps.length ? (
-						<Confirmation order={order} />
+						<Confirmation />
 					) : (
 						// check if the token is generate before the first render
 						checkoutToken && <Form />

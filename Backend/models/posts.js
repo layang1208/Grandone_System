@@ -8,7 +8,7 @@ const postSchema = new mongoose.Schema({
   tags: [String],
   selectedFile: String,
   likes: {
-    // a set of userId within an array
+    // a set of userId within Like array
     type: [String],
     default: [],
   },

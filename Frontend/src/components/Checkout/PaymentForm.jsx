@@ -9,8 +9,8 @@ const PaymentForm = ({
   backStep,
   nextStep,
   shippingData,
-  captureCheckout,
-  refreshCart,
+  // captureCheckout,
+  // refreshCart,
 }) => {
   const stripePromise = loadStripe(process.env.REACT_APP_STRIPEKEY);
   console.log(shippingData);
@@ -26,9 +26,9 @@ const PaymentForm = ({
           checkoutToken={checkoutToken}
           backStep={backStep}
           shippingData={shippingData}
-          captureCheckout={captureCheckout}
           nextStep={nextStep}
-          refreshCart={refreshCart}
+          // captureCheckout={captureCheckout}
+          // refreshCart={refreshCart}
         />
       </Elements>
     </>
